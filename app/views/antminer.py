@@ -201,3 +201,22 @@ def delete_miner(id):
     db.session.delete(miner)
     db.session.commit()
     return redirect(url_for('miners'))
+
+
+@app.route('/refresh/<id>')
+def refresh_miner(id):
+    import os
+    miner = Miner.query.filter_by(id=int(id)).first()
+    if miner.model_id == 3:
+        os.system('ssh root@%s "/etc/init.d/bmminer.sh restart > /dev/null 2>&1"' % miner.ip)
+    else:
+        os.system('ssh root@%s "/etc/init.d/cgminer.sh restart > /dev/null 2>&1"' % miner.ip)
+    return redirect(url_for('miners'))
+
+
+@app.route('/reset/<id>')
+def reset_miner(id):
+    import os
+    miner = Miner.query.filter_by(id=int(id)).first()
+    os.system('ssh root@%s "/sbin/reboot"' % miner.ip)
+    return redirect(url_for('miners'))
