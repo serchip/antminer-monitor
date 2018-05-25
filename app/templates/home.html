@@ -132,13 +132,13 @@ cryptocurrency, crypto, miner, mine, mining
                 <td>{{ hw_error_rates[active_miner.ip] }}</td>
                 <td>{{ uptimes[active_miner.ip] }}</td>
                 <td title="{%- if active_miner.ip in miner_errors %}{{ miner_errors[active_miner.ip] }}{%- endif %}">
-                    {%- if active_miner.ip in miner_errors %}Check your miner{%- else %}OK{%- endif %}</td>
+                    {%- if active_miner.ip in miner_errors %}Check your miner{%- else %}OK{%- endif %}
                 <!--<td><a target="_blank" href="/{{ active_miner.ip }}/summary">Summary</a> |
                     <a target="_blank" href="/{{ active_miner.ip }}/pools">Pools</a> |
                     <a target="_blank" href="/{{ active_miner.ip }}/stats">Stats</a></td>-->
                 |
                 <a href={{ url_for('reset_miner', id=active_miner.id) }}>reset</a> |
-                <a href={{ url_for('refresh_miner', id=active_miner.id) }}>refresh</a>
+                <a href={{ url_for('refresh_miner', id=active_miner.id) }}>refresh</a></td>
                 <td><a href={{ url_for('delete_miner', id=active_miner.id) }}><img src="/static/images/assets/remove.png"></img></a></td>
             </tr>
         {%- endfor %}
