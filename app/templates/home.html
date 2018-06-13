@@ -62,16 +62,6 @@ cryptocurrency, crypto, miner, mine, mining
 </div>
 <br>
 
-{%- with messages = get_flashed_messages(with_categories=true) %}
-    {%- if messages %}
-        {%- for category, message in messages %}
-            <div class="{{ category }}">
-                <strong>{{ message }}</strong>
-            </div>
-        {%- endfor %}
-    {%- endif %}
-{%- endwith %}
-
 {%- if inactive_miners %}
     <fieldset name="inactive_miner_list">
         <legend>In-active Miners ({{ inactive_miners|length }})</legend>
@@ -143,5 +133,16 @@ cryptocurrency, crypto, miner, mine, mining
             </tr>
         {%- endfor %}
     </table>
-</fieldset>
+</fieldset><br />
+
+    {%- with messages = get_flashed_messages(with_categories=true) %}
+    {%- if messages %}
+        {%- for category, message in messages %}
+            <div class="{{ category }}">
+                <strong>{{ message }}</strong>
+            </div>
+        {%- endfor %}
+    {%- endif %}
+    {%- endwith %}
+
 {% endblock %}
