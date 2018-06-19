@@ -12,18 +12,22 @@ from lib.pycgminer import (get_summary,
 from lib.util_hashrate import update_unit_and_value
 from sqlalchemy.exc import IntegrityError
 from app import app, db, logger, __version__
-from app.models import Miner, MinerModel, Settings
+from app.models import Miner, MinerModel, Settings, MinerСontainer
 import re
 from datetime import timedelta
 import time
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def miners():
     # Init variables
     start = time.clock()
+    container_id = request.args.get('c', 1)
     miners = Miner.query.all()
+    if container_id:
+        miners = Miner.query.filter_by(container_id=container_id)
     models = MinerModel.query.all()
+    containers = MinerСontainer.query.all()
     active_miners = []
     inactive_miners = []
     workers = {}
@@ -55,7 +59,10 @@ def miners():
         else:
             # Get worker name
             miner_pools = get_pools(miner.ip)
-            worker = miner_pools['POOLS'][0]['User']
+            try:
+                worker = miner_pools['POOLS'][0]['User']
+            except KeyError:
+                worker = 'None'
             # Get miner's ASIC chips
             asic_chains = [miner_stats['STATS'][1][chain] for chain in miner_stats['STATS'][1].keys() if
                            "chain_acs" in chain]
@@ -118,16 +125,17 @@ def miners():
                 flash(error_message, "error")
                 errors = True
                 miner_errors.update({miner.ip: error_message})
-            if temps:
-                if max(temps) >= 80:
-                    error_message = "[WARNING] High temperatures on miner '{}'.".format(miner.ip)
+#            if temps:
+#                if max(temps) >= 80:
+#                    error_message = "[WARNING] High temperatures on miner '{}'.".format(miner.ip)
+#                    logger.warning(error_message)
+#                    flash(error_message, "warning")
+#
+                if not temps:
+                    temperatures.update({miner.ip: 0})
+                    error_message = "[ERROR] Could not retrieve temperatures from miner '{}'.".format(miner.ip)
                     logger.warning(error_message)
-                    flash(error_message, "warning")
-            if not temps:
-                temperatures.update({miner.ip: 0})
-                error_message = "[ERROR] Could not retrieve temperatures from miner '{}'.".format(miner.ip)
-                logger.warning(error_message)
-                flash(error_message, "error")
+                    flash(error_message, "error")
 
     # Flash success/info message
     if not miners:
@@ -158,6 +166,8 @@ def miners():
     return render_template('home.html',
                            version=__version__,
                            models=models,
+                           containers=containers,
+                           container_id=int(container_id),
                            active_miners=active_miners,
                            inactive_miners=inactive_miners,
                            workers=workers,
@@ -178,13 +188,14 @@ def add_miner():
     miner_ip = request.form['ip']
     miner_model_id = request.form.get('model_id')
     miner_remarks = request.form['remarks']
+    container_id = request.form['container_id']
 
     # exists = Miner.query.filter_by(ip="").first()
     # if exists:
     #    return "IP Address already added"
 
     try:
-        miner = Miner(ip=miner_ip, model_id=miner_model_id, remarks=miner_remarks)
+        miner = Miner(ip=miner_ip, model_id=miner_model_id, container_id=container_id, remarks=miner_remarks)
         db.session.add(miner)
         db.session.commit()
         flash("Miner with IP Address {} added successfully".format(miner.ip), "success")

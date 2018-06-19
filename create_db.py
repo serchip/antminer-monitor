@@ -1,4 +1,4 @@
-from app.models import MinerModel, Settings
+from app.models import MinerModel, Settings, MinerСontainer
 from app import db
 from sqlalchemy.exc import IntegrityError
 
@@ -13,6 +13,11 @@ models.append(MinerModel(model='A3', chips='60,60,60', temp_keys='temp2_', descr
 models.append(MinerModel(model='L3', chips='36,36,36,36', temp_keys='temp2_', description='Litecoin Miner 250 MH/s'))
 models.append(MinerModel(model='R4', chips='63,63', temp_keys='temp2_', description='Bitcoin Miner 8 TH/s'))
 models.append(MinerModel(model='V9', chips='45,45,45', temp_keys='temp2_', description='Bitcoin Miner 4 TH/s'))
+# add Сontainer
+models.append(MinerСontainer(description='Контейнер 1'))
+models.append(MinerСontainer(description='Контейнер 2'))
+models.append(MinerСontainer(description='Контейнер 3'))
+
 settings = []
 settings.append(Settings(name="temperature_alert", value="80", description=""))
 settings.append(Settings(name="email_alert", value="True", description="Whether to send an email on alert"))

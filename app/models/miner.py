@@ -6,6 +6,8 @@ class Miner(db.Model):
     ip = db.Column(db.String(15), unique=True, nullable=False)
     model_id = db.Column(db.Integer, db.ForeignKey('miner_model.id'), nullable=False)
     model = db.relationship("MinerModel", backref="miners")
+    container_id = db.Column(db.Integer, db.ForeignKey('minerСontainer.id'), nullable=False)
+    container = db.relationship('MinerСontainer', backref='miners')
     remarks = db.Column(db.String(255), nullable=True)
 
     def __repr__(self):

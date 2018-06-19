@@ -1,4 +1,4 @@
-from app.models import Miner, MinerModel, Settings
+from app.models import Miner, MinerModel, Settings, MinerСontainer
 from app import db
 
 print("[INFO] Starting DB update...")
@@ -8,7 +8,7 @@ backup = Miner.query.all()
 
 print("[INFO] Backing up miners...")
 for miner in backup:
-    miners.append(Miner(ip=str(miner.ip), model_id=int(miner.model.id), remarks=str(miner.remarks)))
+    miners.append(Miner(ip=str(miner.ip), model_id=int(miner.model.id), container_id=int(miner.container.id), remarks=str(miner.remarks)))
 
 # drop all tables
 print("[INFO] Dropping tables...")
@@ -28,6 +28,14 @@ models.append(MinerModel(model='A3', chips='60,60,60', temp_keys='temp2_', descr
 models.append(MinerModel(model='L3', chips='36,36,36,36', temp_keys='temp2_', description='Litecoin Miner 250 MH/s'))
 models.append(MinerModel(model='R4', chips='63,63', temp_keys='temp2_', description='Bitcoin Miner 8 TH/s'))
 models.append(MinerModel(model='V9', chips='45,45,45', temp_keys='temp2_', description='Bitcoin Miner 4 TH/s'))
+
+# add Сontainer
+models.append(MinerСontainer(description='Контейнер 1'))
+models.append(MinerСontainer(description='Контейнер 2'))
+models.append(MinerСontainer(description='Контейнер 3'))
+models.append(MinerСontainer(description='Контейнер 4'))
+models.append(MinerСontainer(description='Контейнер 5'))
+models.append(MinerСontainer(description='Контейнер 6'))
 # add Settings
 settings = []
 settings.append(Settings(name="temperature_alert", value="80", description=""))
