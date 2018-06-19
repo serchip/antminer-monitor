@@ -1,3 +1,4 @@
+#-*- coding:utf-8 -*-
 from .miner import Miner
 from .miner_model import MinerModel
 from .miner_container import MinerСontainer
