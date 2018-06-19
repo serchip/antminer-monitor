@@ -1,3 +1,4 @@
+#-*- coding:utf-8 -*-
 from app.models import MinerModel, Settings, MinerСontainer
 from app import db
 from sqlalchemy.exc import IntegrityError
