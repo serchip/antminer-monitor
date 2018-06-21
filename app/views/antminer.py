@@ -12,14 +12,14 @@ from lib.pycgminer import (get_summary,
                                )
 from lib.util_hashrate import update_unit_and_value
 from sqlalchemy.exc import IntegrityError
-from app import app, db, logger, __version__
+from app import application, db, logger, __version__
 from app.models import Miner, MinerModel, Settings, MinerСontainer
 import re
 from datetime import timedelta
 import time
 
 
-@app.route('/', methods=['GET'])
+@application.route('/', methods=['GET'])
 def miners():
     # Init variables
     start = time.clock()
@@ -184,7 +184,7 @@ def miners():
                            )
 
 
-@app.route('/add', methods=['POST'])
+@application.route('/add', methods=['POST'])
 def add_miner():
     miner_ip = request.form['ip']
     miner_model_id = request.form.get('model_id')
@@ -207,7 +207,7 @@ def add_miner():
     return redirect(url_for('miners'))
 
 
-@app.route('/delete/<id>')
+@application.route('/delete/<id>')
 def delete_miner(id):
     miner = Miner.query.filter_by(id=int(id)).first()
     db.session.delete(miner)
@@ -215,7 +215,7 @@ def delete_miner(id):
     return redirect(url_for('miners'))
 
 
-@app.route('/refresh/<id>')
+@application.route('/refresh/<id>')
 def refresh_miner(id):
     import os
     miner = Miner.query.filter_by(id=int(id)).first()
@@ -226,7 +226,7 @@ def refresh_miner(id):
     return redirect(url_for('miners'))
 
 
-@app.route('/reset/<id>')
+@application.route('/reset/<id>')
 def reset_miner(id):
     import os
     miner = Miner.query.filter_by(id=int(id)).first()
