@@ -8,19 +8,19 @@ import os
 
 __version__ = "v0.1.1"
 basedir = os.path.abspath(os.path.dirname(__file__))
-app = Flask(__name__, instance_relative_config=True)
-app.config.from_object('config.settings')
-app.config.from_pyfile('settings.py', silent=True)
+application = Flask(__name__, instance_relative_config=True)
+application.config.from_object('config.settings')
+application.config.from_pyfile('settings.py', silent=True)
 
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-manager = Manager(app)
+db = SQLAlchemy(application)
+migrate = Migrate(application, db)
+manager = Manager(application)
 server = Server(host='0.0.0.0', port=5000)
 manager.add_command('runserver', server)
 
 gunicorn_error_logger = logging.getLogger('gunicorn.error')
-app.logger.handlers.extend(gunicorn_error_logger.handlers)
-app.logger.setLevel(logging.DEBUG)
+application.logger.handlers.extend(gunicorn_error_logger.handlers)
+application.logger.setLevel(logging.DEBUG)
 
 # logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)

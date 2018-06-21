@@ -80,7 +80,7 @@
     <div></div>
     <div>
         <fieldset name="total_hashrate" style="height:130px">
-            <legend>Total hashrate per model (5s)</legend>
+            <legend>Сумарный hashrate (5s)</legend>
             <ul>
                 {%- for model in total_hash_rate_per_model|sort %}
                     <li><u>{{ model }}:</u> <strong>{{ total_hash_rate_per_model[model] }}</strong>
