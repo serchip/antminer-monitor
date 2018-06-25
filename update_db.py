@@ -13,7 +13,7 @@ for miner in backup:
 
 # drop all tables
 print("[INFO] Dropping tables...")
-
+db.drop_all()
 # create all tables
 print("[INFO] Recreating all tables...")
 db.create_all()
