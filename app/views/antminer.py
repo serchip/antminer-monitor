@@ -52,14 +52,14 @@ def miners():
     miner_errors = {}
 
     for miner in miners:
-        miner_stats = get_stats(miner.ip)
+        miner_stats = miner.get_stats()
         # if miner not accessible
         if miner_stats['STATUS'][0]['STATUS'] == 'error':
             errors = True
             inactive_miners.append(miner)
         else:
             # Get worker name
-            miner_pools = get_pools(miner.ip)
+            miner_pools = miner.get_pools()
             try:
                 worker = miner_pools['POOLS'][0]['User']
             except KeyError:

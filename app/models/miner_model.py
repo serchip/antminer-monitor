@@ -1,4 +1,5 @@
 from app import db
+import json
 
 
 class MinerModel(db.Model):
