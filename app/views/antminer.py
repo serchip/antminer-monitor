@@ -204,6 +204,10 @@ def add_miner():
         db.session.rollback()
         flash("IP Address {} already added".format(miner_ip), "error")
 
+    try:
+        miner.check_stats()
+    except TypeError:
+        pass
     return redirect(url_for('miners'))
 
 

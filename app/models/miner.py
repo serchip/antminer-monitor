@@ -22,5 +22,18 @@ class Miner(db.Model):
             return json.loads(self.pools)
         return {}
 
+    def check_stats(self):
+        from lib.pycgminer import (get_pools,
+                                   get_stats,
+                                   )
+        import json
+        miner_stats = get_stats(self.ip)
+        miner_stats = json.dumps(miner_stats)
+        miner_pools = get_pools(self.ip)
+        miner_pools = json.dumps(miner_pools)
+        self.stats = miner_stats
+        self.pools = miner_pools
+        db.session.commit()
+
     def __repr__(self):
         return "Miner(ip='{}', model='{}', remarks='{}')".format(self.ip, self.model, self.remarks)
