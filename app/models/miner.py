@@ -27,10 +27,16 @@ class Miner(db.Model):
                                    get_stats,
                                    )
         import json
-        miner_stats = get_stats(self.ip)
-        miner_stats = json.dumps(miner_stats)
-        miner_pools = get_pools(self.ip)
-        miner_pools = json.dumps(miner_pools)
+        try:
+            miner_stats = get_stats(self.ip)
+            miner_stats = json.dumps(miner_stats)
+        except TypeError:
+            miner_stats = None
+        try:
+            miner_pools = get_pools(self.ip)
+            miner_pools = json.dumps(miner_pools)
+        except TypeError:
+            miner_pools = None
         self.stats = miner_stats
         self.pools = miner_pools
         db.session.commit()

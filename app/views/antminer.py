@@ -54,7 +54,7 @@ def miners():
     for miner in miners:
         miner_stats = miner.get_stats()
         # if miner not accessible
-        if miner_stats['STATUS'][0]['STATUS'] == 'error':
+        if not miner_stats or miner_stats['STATUS'][0]['STATUS'] == 'error':
             errors = True
             inactive_miners.append(miner)
         else:
